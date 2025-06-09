@@ -33,8 +33,6 @@ local_settings.py
 
 # dotenv
 .env
-.env.*
-
 # Test output
 .coverage
 htmlcov/
