@@ -1,0 +1,17 @@
+{% extends "users/base.html" %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h2 class="mb-4">Профиль</h2>
+    <ul class="list-group">
+      <li class="list-group-item">Имя пользователя: <b>{{ user.username }}</b></li>
+      <li class="list-group-item">Email: <b>{{ user.email }}</b></li>
+      <li class="list-group-item">Роль: <b>{{ user.get_role_display|default:"Пользователь" }}</b></li>
+    </ul>
+    <a href="{% url 'users:logout' %}" class="btn btn-danger mt-3">Выйти</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "mailings/base.html" %}
+{% block title %}Сообщения{% endblock %}
+{% block content %}
+<h2>Сообщения</h2>
+<a class="btn btn-primary mb-3" href="{% url 'messages:create' %}">Добавить сообщение</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Тема</th>
+            <th>Текст</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for message in object_list %}
+        <tr>
+            <td><a href="{% url 'messages:detail' message.pk %}">{{ message.subject }}</a></td>
+            <td>{{ message.body|truncatewords:8 }}</td>
+            <td>
+                <a href="{% url 'messages:update' message.pk %}" class="btn btn-sm btn-secondary">Изменить</a>
+                <a href="{% url 'messages:delete' message.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="3">Нет сообщений.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

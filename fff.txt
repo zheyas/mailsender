@@ -1,0 +1,66 @@
+(.venv) evgenijasakov@MacBook-Air-Evgenij mailsender % python manage.py runserver
+
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+June 08, 2025 - 16:37:26
+Django version 5.2.2, using settings 'mailsender.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+[08/Jun/2025 16:37:28] "GET / HTTP/1.1" 200 113
+[08/Jun/2025 16:37:35] "GET / HTTP/1.1" 200 113
+Internal Server Error: /mailings/
+Traceback (most recent call last):
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/evgenijasakov/mailsender/mailings/views.py", line 19, in index
+    return render(request, 'mailings/index.html', context)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/loader.py", line 62, in render_to_string
+    return template.render(context, request)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/backends/django.py", line 107, in render
+    return self.template.render(context)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/base.py", line 171, in render
+    return self._render(context)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/loader_tags.py", line 159, in render
+    return compiled_parent._render(context)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/base.py", line 163, in _render
+    return self.nodelist.render(context)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/defaulttags.py", line 327, in render
+    return nodelist.render(context)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/base.py", line 1016, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/base.py", line 1016, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/base.py", line 977, in render_annotated
+    return self.render(context)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/template/defaulttags.py", line 480, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/urls/base.py", line 98, in reverse
+    resolved_url = resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+  File "/Users/evgenijasakov/mailsender/.venv/lib/python3.10/site-packages/django/urls/resolvers.py", line 831, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'register' not found. 'register' is not a valid view function or pattern name.
+[08/Jun/2025 16:37:36] "GET /mailings/ HTTP/1.1" 500 153900
+

@@ -1,0 +1,18 @@
+{% extends "mailings/base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h2>{{ title }}</h2>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        {{ form.subject.label_tag }} {{ form.subject }}
+        {{ form.subject.errors }}
+    </div>
+    <div class="mb-3">
+        {{ form.body.label_tag }} {{ form.body }}
+        {{ form.body.errors }}
+    </div>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+    <a href="{% url 'messages:list' %}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}
