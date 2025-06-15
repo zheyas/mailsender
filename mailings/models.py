@@ -1,8 +1,8 @@
-
 from django.db import models
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
+
 
 class Client(models.Model):
     email = models.EmailField(unique=True)
@@ -13,6 +13,7 @@ class Client(models.Model):
     def __str__(self):
         return f"{self.full_name} <{self.email}>"
 
+
 class Message(models.Model):
     subject = models.CharField(max_length=255)
     body = models.TextField()
@@ -21,15 +22,16 @@ class Message(models.Model):
     def __str__(self):
         return f"{self.subject}"
 
+
 class Mailing(models.Model):
     STATUS_CHOICES = [
-        ('created', 'Создана'),
-        ('started', 'Запущена'),
-        ('finished', 'Завершена')
+        ("created", "Создана"),
+        ("started", "Запущена"),
+        ("finished", "Завершена"),
     ]
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='created')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="created")
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
     clients = models.ManyToManyField(Client)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -37,11 +39,9 @@ class Mailing(models.Model):
     def __str__(self):
         return f"Рассылка {self.pk}"
 
+
 class MailingAttempt(models.Model):
-    STATUS_CHOICES = [
-        ('success', 'Успешно'),
-        ('fail', 'Не успешно')
-    ]
+    STATUS_CHOICES = [("success", "Успешно"), ("fail", "Не успешно")]
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE)
     attempt_time = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
