@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from .models import Client, Message, Mailing
+from .models import Client, Message
 
 
 class ClientModelTest(TestCase):
@@ -19,5 +19,6 @@ class MessageModelTest(TestCase):
         self.user = User.objects.create(username="testuser", password="1234")
 
     def test_create_message(self):
-        message = Message.objects.create(subject="Subject", body="Body", user=self.user)
+        message = Message.objects.create(subject="Subject",
+                                         body="Body", user=self.user)
         self.assertEqual(message.subject, "Subject")
