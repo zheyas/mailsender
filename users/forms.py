@@ -4,9 +4,11 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
 
 User = get_user_model()
 
+
 class CustomUserCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Подтверждение пароля', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Подтверждение пароля',
+                                widget=forms.PasswordInput)
 
     class Meta:
         model = User
@@ -26,6 +28,7 @@ class CustomUserCreationForm(forms.ModelForm):
             user.save()
         return user
 
+
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.EmailField(label="Email", max_length=254)
 
@@ -38,6 +41,7 @@ class CustomAuthenticationForm(AuthenticationForm):
         if not user.is_active:
             raise forms.ValidationError("Пользователь не активирован")
         # и т.д.
+
 
 class CustomPasswordResetForm(PasswordResetForm):
     class Meta:
