@@ -1,7 +1,9 @@
-#docker-compose.yaml
+version: "3.8"
+
 services:
   db:
     image: postgres:15
+    restart: unless-stopped
     env_file:
       - .env
     volumes:
@@ -9,18 +11,25 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-postgres}"]
       interval: 5s
       timeout: 5s
       retries: 10
 
   redis:
     image: redis:7-alpine
+    restart: unless-stopped
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
   backend:
     build: .
+    restart: unless-stopped
     command: >
       sh -c "python manage.py migrate &&
              python manage.py collectstatic --noinput &&
@@ -34,12 +43,13 @@ services:
       db:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
     expose:
       - "8000"
 
   celery:
     build: .
+    restart: unless-stopped
     command: celery -A mailsender worker --loglevel=info
     volumes:
       - .:/app
@@ -49,10 +59,11 @@ services:
       backend:
         condition: service_started
       redis:
-        condition: service_started
+        condition: service_healthy
 
   celery-beat:
     build: .
+    restart: unless-stopped
     command: celery -A mailsender beat --loglevel=info
     volumes:
       - .:/app
@@ -62,10 +73,11 @@ services:
       backend:
         condition: service_started
       redis:
-        condition: service_started
+        condition: service_healthy
 
   nginx:
     image: nginx:1.25-alpine
+    restart: unless-stopped
     ports:
       - "80:80"
     volumes:
