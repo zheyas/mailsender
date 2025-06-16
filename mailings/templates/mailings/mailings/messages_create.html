@@ -1,0 +1,54 @@
+
+{% extends "mailings/base.html" %}
+{% block title %}Создать сообщение{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="mb-4 text-center">Создать новое сообщение</h2>
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_subject" class="form-label fw-semibold">Тема сообщения</label>
+                            <input type="text"
+                                   class="form-control rounded-pill {% if form.subject.errors %}is-invalid{% endif %} "
+                                   id="id_subject"
+                                   name="subject"
+                                   value="{{ form.subject.value|default_if_none:'' }}"
+                                   placeholder="Введите тему">
+                            {% if form.subject.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.subject.errors.0 }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="id_body" class="form-label fw-semibold">Текст сообщения</label>
+                            <textarea
+                                   class="form-control rounded-4 {% if form.body.errors %}is-invalid{% endif %}"
+                                   rows="5"
+                                   id="id_body"
+                                   name="body"
+                                   placeholder="Введите текст сообщения">{{ form.body.value|default_if_none:'' }}</textarea>
+                            {% if form.body.errors %}
+                                <div class="invalid-feedback">{{ form.body.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-success rounded-pill px-4">
+                                Создать
+                            </button>
+                            <a href="{% url 'mailings:messages_list' %}" class="btn btn-secondary rounded-pill px-4">
+                                Отмена
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

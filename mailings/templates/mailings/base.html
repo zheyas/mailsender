@@ -1,29 +1,84 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}MailSender{% endblock %}</title>
-    {% load static %}
-
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+      body { min-height: 100vh; display: flex; flex-direction: column; }
+      .container { flex: 1 0 auto; }
+      footer { flex-shrink: 0; }
+      .navbar-brand { font-weight: 700; letter-spacing: .03em; }
+      .nav-link.active, .nav-link.btn { font-weight: 600; }
+      @media (max-width: 992px) {
+        .add-client-btn { width: 100%; margin-top: 0.5rem; }
+      }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow mb-4">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'mailings:index' %}">MailSender</a>
-        <div>
-            <ul class="navbar-nav ms-auto">
+        <a class="navbar-brand" href="{% url 'mailings:index' %}">
+            <i class="bi bi-envelope-paper-heart"></i> MailSender
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
                 {% if user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'clients:list' %}">Клиенты</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'messages:list' %}">Сообщения</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'mailings:list' %}">Рассылки</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'mailings:profile' %}">Профиль</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'mailings:logout' %}">Выйти</a></li>
+                    <li class="nav-item me-lg-1">
+                        <a class="nav-link" href="{% url 'mailings:clients_list' %}"><i class="bi bi-people"></i> Клиенты</a>
+                    </li>
+                    <!-- Кнопка "Добавить клиента" появляется только на больших экранах, на мобиле она отдельной строкой -->
+                    <li class="nav-item d-lg-block d-none">
+                        <a class="nav-link btn btn-success text-white ms-2 add-client-btn" href="{% url 'mailings:clients_create' %}">
+                            <i class="bi bi-person-plus"></i> Добавить клиента
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mailings:messages_list' %}"><i class="bi bi-chat-left-text"></i> Сообщения</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'mailings:mailings_list' %}"><i class="bi bi-envelope-paper"></i> Рассылки</a>
+                    </li>
+                    <li class="nav-item dropdown ms-lg-3">
+                        <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end bg-dark">
+                            <li><a class="dropdown-item text-light" href="{% url 'users:profile' %}"><i class="bi bi-person"></i> Профиль</a></li>
+                            <li><hr class="dropdown-divider"></li>
+<li>
+  <form action="{% url 'users:logout' %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit"
+            class="dropdown-item text-danger"
+            style="border:none; background:none; width:100%; text-align:left;">
+      <i class="bi bi-box-arrow-right"></i> Выйти
+    </button>
+  </form>
+</li>
+                        </ul>
+                    </li>
+                    <!-- Для мобильных: кнопка ниже меню -->
+                    <li class="nav-item d-lg-none mt-2">
+                        <a class="btn btn-success w-100 add-client-btn" href="{% url 'mailings:clients_create' %}">
+                            <i class="bi bi-person-plus"></i> Добавить клиента
+                        </a>
+                    </li>
                 {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Вход</a></li>
-                    <a class="nav-link" href="{% url 'users:signup' %}">Регистрация</a>
+                    <li
+class="nav-item me-2">
+                        <a class="btn btn-outline-light" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right"></i> Вход</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-warning" href="{% url 'users:signup' %}"><i class="bi bi-person-plus"></i> Регистрация</a>
+                    </li>
                 {% endif %}
             </ul>
         </div>
@@ -32,13 +87,14 @@
 <div class="container">
     {% if messages %}
       {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        <div class="alert alert-{{ message.tags }} mt-2" role="alert">{{ message }}</div>
       {% endfor %}
     {% endif %}
     {% block content %}{% endblock %}
 </div>
-<footer class="bg-dark text-light text-center py-3 mt-5">
-    &copy; 2024 MailSender
+<footer class="bg-dark text-light text-center py-3 mt-5 border-top">
+    &copy; 2024 <span class="fw-bold">MailSender</span> · Сделано с <i class="bi bi-heart-fill text-danger"></i>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
