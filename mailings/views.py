@@ -8,11 +8,10 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Client, Message, Mailing, MailingAttempt
 from .forms import ClientForm, MessageForm, MailingForm
 from django.contrib.auth.decorators import login_required
-from django.utils import timezone
 
 
 def index(request):
@@ -25,9 +24,6 @@ def index(request):
         "unique_clients": unique_clients,
     }
     return render(request, "mailings/index.html", context)
-
-
-### --- КЛИЕНТЫ ---###
 
 
 class ClientListView(LoginRequiredMixin, ListView):
@@ -79,9 +75,6 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
         return Client.objects.filter(user=self.request.user)
 
 
-### --- СООБЩЕНИЯ ---###
-
-
 class MessageListView(LoginRequiredMixin, ListView):
     model = Message
     template_name = "mailings/messages/list.html"
@@ -129,9 +122,6 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
         if self.request.user.is_superuser:
             return Message.objects.all()
         return Message.objects.filter(user=self.request.user)
-
-
-### --- РАССЫЛКИ ---###
 
 
 class MailingListView(LoginRequiredMixin, ListView):

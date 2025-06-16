@@ -7,9 +7,12 @@ app_name = "mailings"
 urlpatterns = [
     path("", views.index, name="index"),
     # Clients
-    path("clients/", views.ClientListView.as_view(), name="clients_list"),
-    path("clients/create/", views.ClientCreateView.as_view(), name="clients_create"),
-    path("clients/<int:pk>/", views.ClientDetailView.as_view(), name="clients_detail"),
+    path("clients/", views.ClientListView.as_view(),
+         name="clients_list"),
+    path("clients/create/", views.ClientCreateView.as_view(),
+         name="clients_create"),
+    path("clients/<int:pk>/", views.ClientDetailView.as_view(),
+         name="clients_detail"),
     path(
         "clients/<int:pk>/update/",
         views.ClientUpdateView.as_view(),
@@ -22,9 +25,11 @@ urlpatterns = [
     ),
     # Messages
     path("messages/", views.MessageListView.as_view(), name="messages_list"),
-    path("messages/create/", views.MessageCreateView.as_view(), name="messages_create"),
+    path("messages/create/", views.MessageCreateView.as_view(),
+         name="messages_create"),
     path(
-        "messages/<int:pk>/", views.MessageDetailView.as_view(), name="messages_detail"
+        "messages/<int:pk>/", views.MessageDetailView.as_view(),
+        name="messages_detail"
     ),
     path(
         "messages/<int:pk>/update/",
@@ -38,9 +43,11 @@ urlpatterns = [
     ),
     # Mailings
     path("mailings/", views.MailingListView.as_view(), name="mailings_list"),
-    path("mailings/create/", views.MailingCreateView.as_view(), name="mailings_create"),
+    path("mailings/create/", views.MailingCreateView.as_view(),
+         name="mailings_create"),
     path(
-        "mailings/<int:pk>/", views.MailingDetailView.as_view(), name="mailings_detail"
+        "mailings/<int:pk>/", views.MailingDetailView.as_view(),
+        name="mailings_detail"
     ),
     path(
         "mailings/<int:pk>/update/",
