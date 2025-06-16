@@ -1,11 +1,15 @@
-
 {% extends "mailings/base.html" %}
+{% block title %}Удалить клиента{% endblock %}
 {% block content %}
-<h2>Удалить клиента</h2>
-<p>Вы уверены, что хотите удалить клиента "{{ object }}"?</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Удалить</button>
-    <a href="{% url 'clients:list' %}" class="btn btn-secondary">Отмена</a>
-</form>
+<div class="card shadow-sm">
+    <div class="card-body text-center">
+        <h2 class="text-danger"><i class="bi bi-trash"></i> Удалить клиента?</h2>
+        <p>Вы уверены, что хотите удалить клиента <strong>{{ object.full_name }}</strong> ({{ object.email }})?</p>
+        <form method="post" class="mt-3">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Да, удалить</button>
+            <a href="{% url 'mailings:clients_detail' object.pk %}" class="btn btn-secondary">Отмена</a>
+        </form>
+    </div>
+</div>
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block title %}Клиенты{% endblock %}
 {% block content %}
 <h2>Клиенты</h2>
-<a class="btn btn-primary mb-3" href="{% url 'clients:create' %}">Добавить клиента</a>
+<a class="btn btn-primary mb-3" href="{% url 'mailings:clients_create' %}">Добавить клиента</a>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -16,12 +16,12 @@
     <tbody>
     {% for client in object_list %}
         <tr>
-            <td><a href="{% url 'clients:detail' client.pk %}">{{ client.email }}</a></td>
+      <a href="{% url 'mailings:clients_detail' client.pk %}">{{ client.email }}</a>
             <td>{{ client.full_name }}</td>
             <td>{{ client.comment|truncatewords:8 }}</td>
             <td>
-                <a href="{% url 'clients:update' client.pk %}" class="btn btn-sm btn-secondary">Изменить</a>
-                <a href="{% url 'clients:delete' client.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+      <a href="{% url 'mailings:clients_update' client.pk %}">Изменить</a>
+      <a href="{% url 'mailings:clients_delete' client.pk %}">Удалить</a>
             </td>
         </tr>
     {% empty %}

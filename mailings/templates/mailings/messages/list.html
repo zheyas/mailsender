@@ -2,7 +2,7 @@
 {% block title %}Сообщения{% endblock %}
 {% block content %}
 <h2>Сообщения</h2>
-<a class="btn btn-primary mb-3" href="{% url 'messages:create' %}">Добавить сообщение</a>
+<a class="btn btn-primary mb-3" href="{% url 'mailings:messages_create' %}">Добавить сообщение</a>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -14,11 +14,11 @@
     <tbody>
     {% for message in object_list %}
         <tr>
-            <td><a href="{% url 'messages:detail' message.pk %}">{{ message.subject }}</a></td>
+            <td><a href="{% url 'mailings:messages_detail' message.pk %}">{{ message.subject }}</a></td>
             <td>{{ message.body|truncatewords:8 }}</td>
             <td>
-                <a href="{% url 'messages:update' message.pk %}" class="btn btn-sm btn-secondary">Изменить</a>
-                <a href="{% url 'messages:delete' message.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+                <a href="{% url 'mailings:messages_update' message.pk %}" class="btn btn-sm btn-secondary">Изменить</a>
+                <a href="{% url 'mailings:messages_delete' message.pk %}" class="btn btn-sm btn-danger">Удалить</a>
             </td>
         </tr>
     {% empty %}
