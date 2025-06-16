@@ -12,6 +12,7 @@ class ClientModelTest(TestCase):
             email="testuser@example.com",
             password="testpassword"
         )
+
     def test_create_client(self):
         client = Client.objects.create(
             email="test@example.com", full_name="Test User", user=self.user
@@ -25,6 +26,7 @@ class MessageModelTest(TestCase):
             email="testuser@example.com",
             password="yourpassword"
         )
+
     def test_create_message(self):
         message = Message.objects.create(subject="Subject",
                                          body="Body", user=self.user)
