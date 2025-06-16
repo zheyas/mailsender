@@ -1,4 +1,3 @@
-
 name: CI & CD
 
 on:
@@ -8,6 +7,22 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v3
       - name: Install Python
@@ -20,7 +35,6 @@ jobs:
           pip install -r requirements.txt
           pip install flake8
 
-      # Генерация .env файла!
       - name: Create .env file
         run: |
           echo "SECRET_KEY=changeme-dev-secret" >> .env
@@ -32,6 +46,15 @@ jobs:
           echo "POSTGRES_HOST=localhost" >> .env
           echo "POSTGRES_PORT=5432" >> .env
           echo "REDIS_URL=redis://localhost:6379/0" >> .env
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          for i in {1..30}; do
+            nc -z localhost 5432 && echo Success && exit 0
+            echo -n .
+            sleep 1
+          done
+          echo "Postgres failed to start"; exit 1
 
       - name: Lint code
         run: flake8 .
