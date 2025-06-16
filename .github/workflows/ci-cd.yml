@@ -44,17 +44,8 @@ jobs:
           pip install -r requirements.txt
           pip install flake8
 
-      - name: Create .env file for tests
-        run: |
-          echo "SECRET_KEY=changeme-dev-secret" >> .env
-          echo "DEBUG=True" >> .env
-          echo "ALLOWED_HOSTS=127.0.0.1,localhost" >> .env
-          echo "POSTGRES_DB=testdb" >> .env
-          echo "POSTGRES_USER=testuser" >> .env
-          echo "POSTGRES_PASSWORD=testpass" >> .env
-          echo "POSTGRES_HOST=localhost" >> .env
-          echo "POSTGRES_PORT=5432" >> .env
-          echo "REDIS_URL=redis://localhost:6379/0" >> .env
+      - name: Lint code
+        run: flake8 .
 
       - name: Wait for PostgreSQL to be ready
         run: |
@@ -65,10 +56,17 @@ jobs:
           done
           echo "Postgres failed to start"; exit 1
 
-      - name: Lint code
-        run: flake8 .
-
       - name: Run tests
+        env:
+          SECRET_KEY: testsecret
+          DEBUG: "True"
+          ALLOWED_HOSTS: 127.0.0.1,localhost
+          POSTGRES_DB: testdb
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          REDIS_URL: redis://localhost:6379/0
         run: python manage.py test
 
   docker-build:
@@ -78,13 +76,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Copy .env for Docker Compose
-        run: cp .env .env.ci
-
-      - name: Prepare .env for docker-compose
+      - name: Set up Docker Compose .env
         run: |
-          cp .env docker-compose.env
-        # Если вас требуют по другому, используйте cp .env .env
+          echo "POSTGRES_DB=mailsender" > .env
+          echo "POSTGRES_USER=adminuser" >> .env
+          echo "POSTGRES_PASSWORD=1234" >> .env
+          echo "POSTGRES_HOST=db" >> .env
+          echo "POSTGRES_PORT=5432" >> .env
+          echo "SECRET_KEY='django-insecure-\$bw=7gen2)905)psvun\$4wh1em0fx(xbcx6pvi6j^a9_74o+cc'" >> .env
+          echo "DEBUG=True" >> .env
+          echo "ALLOWED_HOSTS=localhost,127.0.0.1" >> .env
+          echo "REDIS_URL=redis://redis:6379/0" >> .env
 
       - name: Install Docker Compose
         run: |
@@ -101,7 +103,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Copy files to server
+      - name: Prepare .env for production
+        run: |
+          echo "${{ secrets.ENV_PROD_FILE }}" > .env
+
+      - name: Copy project files to server
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.HOST }}
@@ -121,3 +127,4 @@ jobs:
             docker-compose down
             docker-compose pull
             docker-compose up -d --build
+
