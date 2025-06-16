@@ -1,4 +1,4 @@
-# users/urls.py
+
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
@@ -7,7 +7,7 @@ app_name = "users"
 
 urlpatterns = [
     path("register/", views.register, name="register"),
-    path("", views.profile, name="profile"),  # Или другую view по вашему выбору
+    path("", views.profile, name="profile"),
     path(
         "login/",
         auth_views.LoginView.as_view(template_name="users/login.html"),
@@ -43,5 +43,5 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
-    path("signup/", views.register, name="signup"),
+    path("signup/", views.register, name="signup"),   # лишний, если не нужен
 ]
