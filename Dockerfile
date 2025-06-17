@@ -1,6 +1,6 @@
 
 # Используем официальный python-образ как базовый
-FROM python:3.11-slim
+FROM python:3.10-slim
 
 # Устанавливаем зависимости для сборки Python пакетов и работы с PostgreSQL
 RUN apt-get update && apt-get install -y \
@@ -28,4 +28,4 @@ COPY . .
 EXPOSE 8000
 
 # Значение по умолчанию (можно переопределить командой в docker-compose.yaml)
-CMD ["gunicorn", "mailsender.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "mailsender.wsgi:application", "--bind", "0.0.0.0:10000"]
