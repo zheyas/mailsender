@@ -1,4 +1,3 @@
-#/Users/evgenijasakov/mailsender/mailsender/settings.py
 from pathlib import Path
 import environ
 import os
