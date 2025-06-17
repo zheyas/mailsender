@@ -1,4 +1,4 @@
-
+#/Users/evgenijasakov/mailsender/mailsender/settings.py
 from pathlib import Path
 import environ
 import os
@@ -97,7 +97,6 @@ AUTH_PASSWORD_VALIDATORS = [
             "django.contrib.auth.password_validation.NumericPasswordValidator"
     },
 ]
-
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
