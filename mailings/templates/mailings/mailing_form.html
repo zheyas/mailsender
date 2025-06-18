@@ -1,0 +1,13 @@
+{# mailings/templates/mailings/mailing_form.html #}
+{% extends "mailings/base.html" %}
+{% block title %}Создать рассылку{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Создать рассылку</h2>
+    <form method="post" action="{% url 'mailings:mailings_create' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Создать</button>
+    </form>
+</div>
+{% endblock %}

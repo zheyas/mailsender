@@ -1,0 +1,38 @@
+{% extends "mailings/base.html" %}
+{% block title %}Список рассылок{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Список рассылок</h2>
+    <a href="{% url 'mailings:mailings_create' %}" class="btn btn-primary mb-3">Создать рассылку</a>
+    {% if object_list %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th><th>Название</th><th>...</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mailing in object_list %}
+  <li>
+    {{ mailing }}
+    {% if mailing.is_active %}
+      <form method="post" action="{% url 'mailings:deactivate_mailing' mailing.pk %}">
+        {% csrf_token %}
+        <button type="submit">Деактивировать</button>
+      </form>
+    {% else %}
+      <form method="post" action="{% url 'mailings:activate_mailing' mailing.pk %}">
+        {% csrf_token %}
+        <button type="submit">Активировать</button>
+      </form>
+    {% endif %}
+  </li>
+{% endfor %}
+
+        </tbody>
+    </table>
+    {% else %}
+        <p>Рассылок пока нет.</p>
+    {% endif %}
+</div>
+{% endblock %}

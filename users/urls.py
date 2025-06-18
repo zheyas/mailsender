@@ -7,11 +7,7 @@ app_name = "users"
 urlpatterns = [
     path("register/", views.register, name="register"),
     path("", views.profile, name="profile"),
-    path(
-        "login/",
-        auth_views.LoginView.as_view(template_name="users/login.html"),
-        name="login",
-    ),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
 
     path(
         "logout/", auth_views.LogoutView.as_view(next_page="login"),
@@ -47,4 +43,7 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("signup/", views.register, name="signup"),   # лишний, если не нужен
+    path('list/', views.user_list, name='user_list'),
+    path('<int:pk>/deactivate/', views.deactivate_user, name='deactivate_user'),
+    path('<int:pk>/activate/', views.activate_user, name='activate_user'),
 ]

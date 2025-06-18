@@ -1,0 +1,22 @@
+{% extends "mailings/base.html" %}
+{% block content %}
+<h1>Пользователи</h1>
+<ul>
+{% for user in object_list %}
+  <li>
+    {{ user.username }} ({{ user.email }}) 
+    {% if user.is_active %}
+      <form method="post" action="{% url 'mailings:deactivate_user' user.pk %}">
+        {% csrf_token %}
+        <button type="submit">Заблокировать</button>
+      </form>
+    {% else %}
+      <form method="post" action="{% url 'mailings:activate_user' user.pk %}">
+        {% csrf_token %}
+        <button type="submit">Активировать</button>
+      </form>
+    {% endif %}
+  </li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,24 @@
+
+{% extends "mailings/base.html" %}
+{% block title %}Информация о рассылке{% endblock %}
+{% block content %}
+<h2>Рассылка: {{ object }}</h2>
+<ul class="list-group mb-3">
+    <li class="list-group-item"><strong>Тема сообщения:</strong> {{ object.message.subject }}</li>
+    <li class="list-group-item"><strong>Получатели:</strong>
+        {% for client in object.recipients.all %}
+            {{ client.email }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </li>
+    <li class="list-group-item"><strong>Статус:</strong> {{ object.status }}</li>
+    <li class="list-group-item"><strong>Начать рассылку:</strong>
+        <form method="post" action="{% url 'mailings:send_mailing' object.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success">Отправить письма</button>
+        </form>
+    </li>
+</ul>
+<a href="{% url 'mailings:update' object.pk %}" class="btn btn-primary">Изменить</a>
+<a href="{% url 'mailings:delete' object.pk %}" class="btn btn-danger">Удалить</a>
+<a href="{% url 'mailings:list' %}" class="btn btn-secondary">Назад</a>
+{% endblock %}

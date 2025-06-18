@@ -5,14 +5,27 @@
 <form method="post">
     {% csrf_token %}
     <div class="mb-3">
-        {{ form.subject.label_tag }} {{ form.subject }}
-        {{ form.subject.errors }}
+        {{ form.start_time.label_tag }} {{ form.start_time }}
+        {{ form.start_time.errors }}
     </div>
     <div class="mb-3">
-        {{ form.body.label_tag }} {{ form.body }}
-        {{ form.body.errors }}
+        {{ form.end_time.label_tag }} {{ form.end_time }}
+        {{ form.end_time.errors }}
+    </div>
+    <div class="mb-3">
+        {{ form.status.label_tag }} {{ form.status }}
+        {{ form.status.errors }}
+    </div>
+    <div class="mb-3">
+        {{ form.message.label_tag }} {{ form.message }}
+        {{ form.message.errors }}
+    </div>
+    <div class="mb-3">
+        {{ form.clients.label_tag }} {{ form.clients }}
+        {{ form.clients.errors }}
     </div>
     <button type="submit" class="btn btn-primary">Сохранить</button>
-    <a href="{% url 'messages:list' %}" class="btn btn-secondary">Отмена</a>
+    <a href="{% url 'mailings:messages_list' %}">Отмена</a>
 </form>
+
 {% endblock %}

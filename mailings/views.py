@@ -1,5 +1,4 @@
 from django.core.mail import send_mail
-from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView,
@@ -9,10 +8,21 @@ from django.views.generic import (
     DeleteView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Client, Message, Mailing, MailingAttempt
-from .forms import ClientForm, MessageForm, MailingForm
+from .models import Client, Message, MailingAttempt
+from .forms import ClientForm, MessageForm
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from .forms import MailingForm
+from django.shortcuts import get_object_or_404, redirect
+from .models import Mailing
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import user_passes_test
+from django.views.generic import ListView
 
+
+class UserListView(ListView):
+    model = get_user_model()
+    template_name = 'mailings/user_list.html'
 
 def index(request):
     mailing_count = Mailing.objects.count()
@@ -142,7 +152,7 @@ class MailingDetailView(LoginRequiredMixin, DetailView):
 class MailingCreateView(LoginRequiredMixin, CreateView):
     model = Mailing
     form_class = MailingForm
-    template_name = "mailings/mailings/form.html"
+    template_name = 'mailings/mailings/messages_create.html'
     success_url = reverse_lazy("mailings:mailings_list")
 
     def form_valid(self, form):
@@ -172,6 +182,18 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
             return Mailing.objects.all()
         return Mailing.objects.filter(user=self.request.user)
 
+def mailing_create(request):
+    if request.method == "POST":
+        form = MailingForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('mailings:messages_list')
+    else:
+        form = MailingForm()
+    return render(request, "mailings/mailings/form.html", {
+        "form": form,
+        "title": "Создать рассылку"
+    })
 
 @login_required
 def send_mailing(request, pk):
@@ -204,3 +226,31 @@ class MailingAttemptsListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return MailingAttempt.objects.filter(mailing_id=self.kwargs["pk"])
+
+@user_passes_test(lambda u: u.is_staff)
+def deactivate_mailing(request, pk):
+    mailing = get_object_or_404(Mailing, pk=pk)
+    mailing.is_active = False
+    mailing.save()
+    return redirect('mailings:mailings_list')
+
+@user_passes_test(lambda u: u.is_staff)
+def activate_mailing(request, pk):
+    mailing = get_object_or_404(Mailing, pk=pk)
+    mailing.is_active = True
+    mailing.save()
+    return redirect('mailings:mailings_list')
+
+@user_passes_test(lambda u: u.is_staff)
+def deactivate_user(request, pk):
+    user = get_object_or_404(get_user_model(), pk=pk)
+    user.is_active = False
+    user.save()
+    return redirect('mailings:users_list')
+
+@user_passes_test(lambda u: u.is_staff)
+def activate_user(request, pk):
+    user = get_object_or_404(get_user_model(), pk=pk)
+    user.is_active = True
+    user.save()
+    return redirect('mailings:users_list')
