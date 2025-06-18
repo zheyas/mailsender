@@ -36,6 +36,8 @@ class Mailing(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE)
     clients = models.ManyToManyField(Client)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=True)
+
 
     def __str__(self):
         return f"Рассылка {self.pk}"

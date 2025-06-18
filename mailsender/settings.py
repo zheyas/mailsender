@@ -3,6 +3,7 @@ from pathlib import Path
 import environ
 import os
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Инициализация django-environ
@@ -10,6 +11,17 @@ env = environ.Env(
     DEBUG=(bool, False),
 )
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+
+env = environ.Env()
+environ.Env.read_env()
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env.int('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 
 # SECRET, DEBUG, ALLOWED_HOSTS
 SECRET_KEY = env("SECRET_KEY")
@@ -106,10 +118,10 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = (
-    [BASE_DIR / "static"] if (BASE_DIR / "static").exists() else []
-)
+STATICFILES_DIRS = [BASE_DIR / 'static']      # ← здесь твои исходные static-файлы для разработки
+STATIC_ROOT = BASE_DIR / "staticfiles"        # ← сюда будет складывать файлы команда collectstatic
+
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

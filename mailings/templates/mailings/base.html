@@ -44,12 +44,14 @@
                         <a class="nav-link" href="{% url 'mailings:messages_list' %}"><i class="bi bi-chat-left-text"></i> Сообщения</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mailings:mailings_list' %}"><i class="bi bi-envelope-paper"></i> Рассылки</a>
                     </li>
+                                            <a href="{% url 'mailings:mailings_create' %}" class="btn btn-success">➕ Новая рассылка</a>
+
                     <li class="nav-item dropdown ms-lg-3">
                         <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle"></i> {{ user.username }}
                         </a>
+
                         <ul class="dropdown-menu dropdown-menu-end bg-dark">
                             <li><a class="dropdown-item text-light" href="{% url 'users:profile' %}"><i class="bi bi-person"></i> Профиль</a></li>
                             <li><hr class="dropdown-divider"></li>
@@ -74,10 +76,11 @@
                 {% else %}
                     <li
 class="nav-item me-2">
-                        <a class="btn btn-outline-light" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right"></i> Вход</a>
+
+<a class="btn btn-outline-light" href="{% url 'users:login' %}"><i class="bi bi-box-arrow-in-right"></i> Вход</a>
                     </li>
                     <li class="nav-item">
-                        <a class="btn btn-warning" href="{% url 'users:signup' %}"><i class="bi bi-person-plus"></i> Регистрация</a>
+                        <a class="btn btn-warning" href="{% url 'users:register' %}"><i class="bi bi-person-plus"></i> Регистрация</a>
                     </li>
                 {% endif %}
             </ul>

@@ -144,3 +144,7 @@ python manage.py send_mailing <mailing_id>
 ## Контакты для связи
 
 zhenyayasakov@yandex.ru
+
+##Важно
+обрати внимание на ДВА раза "mailings"!
+http://127.0.0.1:8000/mailings/mailings/create/
