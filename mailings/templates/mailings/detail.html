@@ -18,7 +18,8 @@
         </form>
     </li>
 </ul>
-<a href="{% url 'mailings:update' object.pk %}" class="btn btn-primary">Изменить</a>
-<a href="{% url 'mailings:delete' object.pk %}" class="btn btn-danger">Удалить</a>
-<a href="{% url 'mailings:list' %}" class="btn btn-secondary">Назад</a>
+<a href="{% url 'mailings:messages_update' object.pk %}" class="btn btn-primary">Изменить</a>
+<a href="{% url 'mailings:messages_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+<a href="{% url 'mailings:messages_list' %}" class="btn btn-secondary">Назад</a>
+
 {% endblock %}
