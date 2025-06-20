@@ -6,7 +6,8 @@
     <li class="list-group-item"><strong>Тема:</strong> {{ object.subject }}</li>
     <li class="list-group-item"><strong>Текст:</strong> {{ object.body }}</li>
 </ul>
-<a href="{% url 'messages:update' object.pk %}" class="btn btn-primary">Изменить</a>
-<a href="{% url 'messages:delete' object.pk %}" class="btn btn-danger">Удалить</a>
-<a href="{% url 'messages:list' %}" class="btn btn-secondary">Назад</a>
+<a href="{% url 'mailings:messages_update' object.pk %}" class="btn btn-primary">Изменить</a>
+<a href="{% url 'mailings:messages_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+<a href="{% url 'mailings:messages_list' %}" class="btn btn-secondary">Назад</a>
+
 {% endblock %}

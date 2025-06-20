@@ -1,8 +1,8 @@
-
 from django.urls import path
 from . import views
 from .views import ClientCreateView, MailingCreateView
-
+from .views import UserListView
+import users
 app_name = "mailings"
 
 urlpatterns = [
@@ -38,7 +38,7 @@ urlpatterns = [
     path("mailings/<int:pk>/activate/", views.activate_mailing, name="activate_mailing"),
 
     # Пользователи (только для модератора/админа)
-    path("users/", views.UserListView.as_view(), name="users_list"),
-    path("users/<int:pk>/deactivate/", views.deactivate_user, name="deactivate_user"),
-    path("users/<int:pk>/activate/", views.activate_user, name="activate_user"),
+    path('users/', UserListView.as_view(), name='user_list'),
+    path("users/<int:pk>/deactivate/", users.views.deactivate_user, name="deactivate_user"),
+    path("users/<int:pk>/activate/", users.views.activate_user, name="activate_user"),
 ]

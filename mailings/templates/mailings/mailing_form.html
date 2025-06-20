@@ -1,4 +1,4 @@
-{# mailings/templates/mailings/mailing_form.html #}
+
 {% extends "mailings/base.html" %}
 {% block title %}Создать рассылку{% endblock %}
 {% block content %}
@@ -6,7 +6,62 @@
     <h2>Создать рассылку</h2>
     <form method="post" action="{% url 'mailings:mailings_create' %}">
         {% csrf_token %}
-        {{ form.as_p }}
+
+        <div class="mb-3">
+            {{ form.start_time.label_tag }}
+            {{ form.start_time }}
+            {% if form.start_time.help_text %}
+                <small class="form-text text-muted">{{ form.start_time.help_text }}</small>
+            {% endif %}
+            {% for error in form.start_time.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.end_time.label_tag }}
+            {{ form.end_time }}
+            {% if form.end_time.help_text %}
+                <small class="form-text text-muted">{{ form.end_time.help_text }}</small>
+            {% endif %}
+            {% for error in form.end_time.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.status.label_tag }}
+            {{ form.status }}
+            {% if form.status.help_text %}
+                <small class="form-text text-muted">{{ form.status.help_text }}</small>
+            {% endif %}
+            {% for error in form.status.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.message.label_tag }}
+            {{ form.message }}
+            {% if form.message.help_text %}
+                <small class="form-text text-muted">{{ form.message.help_text }}</small>
+            {% endif %}
+            {% for error in form.message.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.clients.label_tag }}
+            {{ form.clients }}
+            {% if form.clients.help_text %}
+                <small class="form-text text-muted">{{ form.clients.help_text }}</small>
+            {% endif %}
+            {% for error in form.clients.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
+
         <button type="submit" class="btn btn-success">Создать</button>
     </form>
 </div>
