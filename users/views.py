@@ -1,4 +1,3 @@
-from django.contrib import messages
 from django.contrib.auth import login
 from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import login_required, user_passes_test
