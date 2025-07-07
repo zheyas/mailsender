@@ -1,4 +1,4 @@
-#.github/workflows/ci-cd.yml
+
 name: CI & CD
 
 on:
@@ -8,6 +8,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      DEBUG: "True"
+      ALLOWED_HOSTS: 127.0.0.1,localhost
     steps:
       - uses: actions/checkout@v3
 
@@ -29,10 +33,6 @@ jobs:
         run: python manage.py migrate
 
       - name: Run tests
-        env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          DEBUG: "True"
-          ALLOWED_HOSTS: 127.0.0.1,localhost
         run: python manage.py test
 
   docker-build:
