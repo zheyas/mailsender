@@ -10,11 +10,13 @@ urlpatterns = [
     path("profile/", views.profile, name="profile"),
     path("login/", auth_views.LoginView.as_view(), name="login"),
     path(
-        "logout/", auth_views.LogoutView.as_view(next_page="users:login"), name="logout"
+        "logout/",
+        auth_views.LogoutView.as_view(next_page="users:login"), name="logout"
     ),
     path(
         "password_reset/",
-        auth_views.PasswordResetView.as_view(template_name="users/password_reset.html"),
+        auth_views.PasswordResetView.as_view(
+            template_name="users/password_reset.html"),
         name="password_reset",
     ),
     path(
@@ -39,7 +41,8 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("list/", views.user_list, name="user_list"),
-    path("<int:pk>/deactivate/", views.deactivate_user, name="deactivate_user"),
+    path("<int:pk>/deactivate/",
+         views.deactivate_user, name="deactivate_user"),
     path("<int:pk>/activate/", views.activate_user, name="activate_user"),
     path("signup/", views.signup, name="signup"),
 ]

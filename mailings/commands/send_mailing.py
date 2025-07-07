@@ -12,7 +12,8 @@ class Command(BaseCommand):
         for mailing in Mailing.objects.filter(status="Запущена"):
             for client in mailing.recipients.all():
                 send_mail(
-                    mailing.message.subject, mailing.message.body, None, [client.email]
+                    mailing.message.subject, mailing.message.body,
+                    None, [client.email]
                 )
             mailing.status = "Завершена"
             mailing.save()

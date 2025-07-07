@@ -53,7 +53,8 @@ def deactivate_user(request, pk):
     if request.method == "POST":
         user.is_active = False
         user.save()
-        messages.success(request, f"Пользователь" f" {user.username} заблокирован.")
+        messages.success(request,
+                         f"Пользователь {user.username}  заблокирован.")
     return redirect("users:user_list")
 
 
