@@ -1,4 +1,4 @@
-
+#.github/workflows/ci-cd.yml
 name: CI & CD
 
 on:
@@ -30,7 +30,7 @@ jobs:
 
       - name: Run tests
         env:
-          SECRET_KEY: testsecret
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
           DEBUG: "True"
           ALLOWED_HOSTS: 127.0.0.1,localhost
         run: python manage.py test
