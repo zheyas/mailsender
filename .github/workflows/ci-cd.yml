@@ -8,17 +8,14 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
-      DEBUG: "True"
-      ALLOWED_HOSTS: 127.0.0.1,localhost
+
     steps:
       - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
@@ -29,10 +26,12 @@ jobs:
       - name: Lint code
         run: flake8 .
 
-      - name: Run migrations
-        run: python manage.py migrate
-
-      - name: Run tests
+      - name: Run tests (Django+SQLite)
+        env:
+          SECRET_KEY: testsecret
+          DEBUG: "True"
+          ALLOWED_HOSTS: 127.0.0.1,localhost
+          DB_NAME: db.sqlite3
         run: python manage.py test
 
   docker-build:
@@ -42,17 +41,25 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Build Docker image
-        run: docker build -t mailsender .
+      - name: Set up Docker Compose .env
+        run: |
+          echo "POSTGRES_DB=mailsender" > .env
+          echo "POSTGRES_USER=adminuser" >> .env
+          echo "POSTGRES_PASSWORD=1234" >> .env
+          echo "POSTGRES_HOST=db" >> .env
+          echo "POSTGRES_PORT=5432" >> .env
+          echo "SECRET_KEY='django-insecure-\$bw=7gen2)905)psvun\$4wh1em0fx(xbcx6pvi6j^a9_74o+cc'" >> .env
+          echo "DEBUG=True" >> .env
+          echo "ALLOWED_HOSTS=localhost,127.0.0.1" >> .env
+          echo "REDIS_URL=redis://redis:6379/0" >> .env
 
-      - name: Save Docker image as tar
-        run: docker save mailsender > mailsender.tar
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
 
-      - name: Upload Docker image tar as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: mailsender-image
-          path: mailsender.tar
+      - name: Build Docker images
+        run: docker-compose build
 
   deploy:
     runs-on: ubuntu-latest
@@ -61,22 +68,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Download Docker image tar
-        uses: actions/download-artifact@v3
-        with:
-          name: mailsender-image
-          path: .
+      - name: Prepare .env for production
+        run: |
+          echo "${{ secrets.ENV_PROD_FILE }}" > .env
 
-      - name: Copy Docker image tar, .env и db.sqlite3 на сервер
+      - name: Copy project files to server
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          source: |
-            mailsender.tar
-            .env
-            db.sqlite3
+          source: "."
           target: "/home/${{ secrets.USERNAME }}/mailsender/"
 
       - name: Deploy on server via SSH
@@ -87,12 +89,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /home/${{ secrets.USERNAME }}/mailsender/
-            docker load -i mailsender.tar
-            docker stop mailsender || true
-            docker rm mailsender || true
-            docker run -d \
-              --name mailsender \
-              --env-file .env \
-              -v /home/${{ secrets.USERNAME }}/mailsender/db.sqlite3:/app/db.sqlite3 \
-              -p 80:8000 \
-              mailsender
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d --build
