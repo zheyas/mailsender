@@ -67,17 +67,15 @@ TEMPLATES = [
 WSGI_APPLICATION = "mailsender.wsgi.application"
 
 # --- БЛОК ДЛЯ ПОДДЕРЖКИ SQLITE И POSTGRES ---
+# Определяем, хотим ли SQLite (обычно для тестов и CI)
+USE_SQLITE = (env.bool("USE_SQLITE", default=False)
+              or env("DB_NAME", default="") == "db.sqlite3")
 
-# Если переменная USE_SQLITE == '1' ИЛИ если НЕ указаны параметры postgres,
-# то используем SQLite (например, для CI)
-USE_SQLITE = env.bool("USE_SQLITE", default=False)
-
-if USE_SQLITE or not env("DB_NAME", default=None):
+if USE_SQLITE:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
-            "NAME":
-                env("DB_NAME", default=os.path.join(BASE_DIR, "db.sqlite3")),
+            "NAME": env("DB_NAME", default=str(BASE_DIR / "db.sqlite3")),
         }
     }
 else:
@@ -85,10 +83,10 @@ else:
         "default": {
             "ENGINE": "django.db.backends.postgresql",
             "NAME": env("DB_NAME"),
-            "USER": env("DB_USER"),
-            "PASSWORD": env("DB_PASSWORD"),
-            "HOST": env("DB_HOST"),
-            "PORT": env("DB_PORT"),
+            "USER": env("DB_USER", default=""),
+            "PASSWORD": env("DB_PASSWORD", default=""),
+            "HOST": env("DB_HOST", default=""),
+            "PORT": env("DB_PORT", default="5432"),
         }
     }
 

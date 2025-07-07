@@ -31,6 +31,7 @@ jobs:
           SECRET_KEY: testsecret
           DEBUG: "True"
           ALLOWED_HOSTS: 127.0.0.1,localhost
+          USE_SQLITE: "1"
           DB_NAME: db.sqlite3
         run: python manage.py test
 
@@ -43,12 +44,12 @@ jobs:
 
       - name: Set up Docker Compose .env
         run: |
-          echo "POSTGRES_DB=mailsender" > .env
-          echo "POSTGRES_USER=adminuser" >> .env
-          echo "POSTGRES_PASSWORD=1234" >> .env
-          echo "POSTGRES_HOST=db" >> .env
-          echo "POSTGRES_PORT=5432" >> .env
-          echo "SECRET_KEY='django-insecure-\$bw=7gen2)905)psvun\$4wh1em0fx(xbcx6pvi6j^a9_74o+cc'" >> .env
+          echo "DB_NAME=mailsender" > .env
+          echo "DB_USER=adminuser" >> .env
+          echo "DB_PASSWORD=1234" >> .env
+          echo "DB_HOST=db" >> .env
+          echo "DB_PORT=5432" >> .env
+          echo "SECRET_KEY=django-insecure-\$bw=7gen2)905)psvun\$4wh1em0fx(xbcx6pvi6j^a9_74o+cc" >> .env
           echo "DEBUG=True" >> .env
           echo "ALLOWED_HOSTS=localhost,127.0.0.1" >> .env
           echo "REDIS_URL=redis://redis:6379/0" >> .env
