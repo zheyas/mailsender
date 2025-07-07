@@ -1,25 +1,27 @@
-from django.core.mail import send_mail
-from django.urls import reverse_lazy
-from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
-from .models import Client, Message, Mailing, MailingAttempt
-from .forms import ClientForm, MessageForm, MailingForm
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth import get_user_model
-from django.views.generic import ListView
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
 
+from .forms import ClientForm, MailingForm, MessageForm
+from .models import Client, Mailing, MailingAttempt, Message
 
 User = get_user_model()
 
+
 class UserListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = User
-    template_name = 'user_list.html'      # Путь к шаблону (относительно templates/)
-    context_object_name = 'users'
+    template_name = "user_list.html"
+    context_object_name = "users"
 
     def test_func(self):
         # Видно только админу или staff-пользователю
         return self.request.user.is_staff or self.request.user.is_superuser
+
 
 def index(request):
     mailing_count = Mailing.objects.count()
@@ -32,6 +34,7 @@ def index(request):
     }
     return render(request, "mailings/index.html", context)
 
+
 # --- Клиенты ---
 class ClientListView(LoginRequiredMixin, ListView):
     model = Client
@@ -42,9 +45,11 @@ class ClientListView(LoginRequiredMixin, ListView):
             return Client.objects.all()
         return Client.objects.filter(user=self.request.user)
 
+
 class ClientDetailView(LoginRequiredMixin, DetailView):
     model = Client
     template_name = "mailings/clients/detail.html"
+
 
 class ClientCreateView(LoginRequiredMixin, CreateView):
     model = Client
@@ -55,6 +60,7 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
 
 class ClientUpdateView(LoginRequiredMixin, UpdateView):
     model = Client
@@ -67,6 +73,7 @@ class ClientUpdateView(LoginRequiredMixin, UpdateView):
             return Client.objects.all()
         return Client.objects.filter(user=self.request.user)
 
+
 class ClientDeleteView(LoginRequiredMixin, DeleteView):
     model = Client
     template_name = "mailings/clients/confirm_delete.html"
@@ -76,6 +83,7 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
         if self.request.user.is_superuser:
             return Client.objects.all()
         return Client.objects.filter(user=self.request.user)
+
 
 # --- Сообщения ---
 class MessageListView(LoginRequiredMixin, ListView):
@@ -87,9 +95,11 @@ class MessageListView(LoginRequiredMixin, ListView):
             return Message.objects.all()
         return Message.objects.filter(user=self.request.user)
 
+
 class MessageDetailView(LoginRequiredMixin, DetailView):
     model = Message
     template_name = "mailings/messages/detail.html"
+
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
     model = Message
@@ -100,6 +110,7 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
 
 class MessageUpdateView(LoginRequiredMixin, UpdateView):
     model = Message
@@ -112,6 +123,7 @@ class MessageUpdateView(LoginRequiredMixin, UpdateView):
             return Message.objects.all()
         return Message.objects.filter(user=self.request.user)
 
+
 class MessageDeleteView(LoginRequiredMixin, DeleteView):
     model = Message
     template_name = "mailings/messages/confirm_delete.html"
@@ -121,6 +133,7 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
         if self.request.user.is_superuser:
             return Message.objects.all()
         return Message.objects.filter(user=self.request.user)
+
 
 # --- Рассылки ---
 class MailingListView(LoginRequiredMixin, ListView):
@@ -132,9 +145,11 @@ class MailingListView(LoginRequiredMixin, ListView):
             return Mailing.objects.all()
         return Mailing.objects.filter(user=self.request.user)
 
+
 class MailingDetailView(LoginRequiredMixin, DetailView):
     model = Mailing
     template_name = "mailings/mailings/detail.html"
+
 
 class MailingCreateView(LoginRequiredMixin, CreateView):
     model = Mailing
@@ -144,8 +159,9 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.instance.status = 'Создана'
+        form.instance.status = "Создана"
         return super().form_valid(form)
+
 
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
     model = Mailing
@@ -158,6 +174,7 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
             return Mailing.objects.all()
         return Mailing.objects.filter(user=self.request.user)
 
+
 class MailingDeleteView(LoginRequiredMixin, DeleteView):
     model = Mailing
     template_name = "mailings/mailings/confirm_delete.html"
@@ -167,6 +184,7 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
         if self.request.user.is_superuser:
             return Mailing.objects.all()
         return Mailing.objects.filter(user=self.request.user)
+
 
 @login_required
 def send_mailing(request, pk):
@@ -192,12 +210,14 @@ def send_mailing(request, pk):
         mailing.save()
     return redirect("mailings:mailings_detail", pk=mailing.pk)
 
+
 class MailingAttemptsListView(LoginRequiredMixin, ListView):
     model = MailingAttempt
     template_name = "mailings/mailings/attempts_list.html"
 
     def get_queryset(self):
         return MailingAttempt.objects.filter(mailing_id=self.kwargs["pk"])
+
 
 # --- Активация/деактивация рассылок (только для staff) ---
 @user_passes_test(lambda u: u.is_staff)
@@ -206,7 +226,8 @@ def deactivate_mailing(request, pk):
     if request.method == "POST":
         mailing.is_active = False
         mailing.save()
-    return redirect('mailings:mailings_list')
+    return redirect("mailings:mailings_list")
+
 
 @user_passes_test(lambda u: u.is_staff)
 def activate_mailing(request, pk):
@@ -214,4 +235,4 @@ def activate_mailing(request, pk):
     if request.method == "POST":
         mailing.is_active = True
         mailing.save()
-    return redirect('mailings:mailings_list')
+    return redirect("mailings:mailings_list")
