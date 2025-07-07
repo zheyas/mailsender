@@ -2,29 +2,30 @@
 # Используем официальный python-образ как базовый
 FROM python:3.11-slim
 
-# Устанавливаем сборочные зависимости (libpq-dev не нужен для SQLite!)
+# Устанавливаем зависимости для сборки Python пакетов и работы с PostgreSQL
 RUN apt-get update && apt-get install -y \
     build-essential \
+    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Задаём рабочую директорию внутри контейнера
+# Установка рабочей директории
 WORKDIR /app
 
-# Копируем только файл зависимостей для более эффективного кэширования
+# Копируем requirements.txt отдельно для кэширования слоёв
 COPY requirements.txt .
 
-# Устанавливаем Python-зависимости
+# Устанавливаем зависимости python
 RUN pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 
 # Копируем остальной проект в контейнер
 COPY . .
 
-# (По желанию) Собрать статические файлы Django сразу при билде
+# Собираем статические файлы (можно закомментировать, если собираете их из docker-compose)
 # RUN python manage.py collectstatic --noinput
 
-# Открываем порт 8000 для приложения
+# Открываем порт для gunicorn/django
 EXPOSE 8000
 
-# Запускаем gunicorn (замени 'mailsender' на имя своего проекта, если оно изменишь!)
+# Значение по умолчанию (можно переопределить командой в docker-compose.yaml)
 CMD ["gunicorn", "mailsender.wsgi:application", "--bind", "0.0.0.0:8000"]
