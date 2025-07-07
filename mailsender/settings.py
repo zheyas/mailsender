@@ -1,8 +1,8 @@
-
 from pathlib import Path
 import environ
 import os
-
+import sys
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -80,15 +80,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "mailsender.wsgi.application"
 
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("POSTGRES_DB"),
-        "USER": env("POSTGRES_USER"),
-        "PASSWORD": env("POSTGRES_PASSWORD"),
-        "HOST": env("POSTGRES_HOST"),
-        "PORT": env("POSTGRES_PORT", default="5432"),
-    }
+    "default": dj_database_url.config(
+        default=os.getenv("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -137,3 +135,12 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_BEAT_SCHEDULER = (
     "django_celery_beat.schedulers:DatabaseScheduler"
 )
+
+# Для тестов использовать отдельный файл базы
+if 'test' in sys.argv:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'test_db.sqlite3',
+        }
+    }

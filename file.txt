@@ -1,0 +1,130 @@
+
+name: CI & CD
+
+on:
+  push:
+    branches: [develop, main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install flake8
+
+      - name: Lint code
+        run: flake8 .
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          for i in {1..30}; do
+            nc -z localhost 5432 && echo Success && exit 0
+            echo -n .
+            sleep 1
+          done
+          echo "Postgres failed to start"; exit 1
+
+      - name: Run tests
+        env:
+          SECRET_KEY: testsecret
+          DEBUG: "True"
+          ALLOWED_HOSTS: 127.0.0.1,localhost
+          POSTGRES_DB: testdb
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpass
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          REDIS_URL: redis://localhost:6379/0
+        run: python manage.py test
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Docker Compose .env
+        run: |
+          echo "POSTGRES_DB=mailsender" > .env
+          echo "POSTGRES_USER=adminuser" >> .env
+          echo "POSTGRES_PASSWORD=1234" >> .env
+          echo "POSTGRES_HOST=db" >> .env
+          echo "POSTGRES_PORT=5432" >> .env
+          echo "SECRET_KEY='django-insecure-\$bw=7gen2)905)psvun\$4wh1em0fx(xbcx6pvi6j^a9_74o+cc'" >> .env
+          echo "DEBUG=True" >> .env
+          echo "ALLOWED_HOSTS=localhost,127.0.0.1" >> .env
+          echo "REDIS_URL=redis://redis:6379/0" >> .env
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      - name: Build Docker images
+        run: docker-compose build
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: docker-build
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Prepare .env for production
+        run: |
+          echo "${{ secrets.ENV_PROD_FILE }}" > .env
+
+      - name: Copy project files to server
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          source: "."
+          target: "/home/${{ secrets.USERNAME }}/mailsender/"
+
+      - name: Deploy on server via SSH
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd /home/${{ secrets.USERNAME }}/mailsender/
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d --build
+
