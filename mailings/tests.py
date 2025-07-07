@@ -27,5 +27,6 @@ class MessageModelTest(TestCase):
         )
 
     def test_create_message(self):
-        message = Message.objects.create(subject="Subject", body="Body", user=self.user)
+        message = Message.objects.create(
+            subject="Subject", body="Body", user=self.user)
         self.assertEqual(message.subject, "Subject")

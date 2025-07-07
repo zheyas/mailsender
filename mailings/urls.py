@@ -13,7 +13,8 @@ urlpatterns = [
     # Клиенты
     path("clients/", views.ClientListView.as_view(), name="clients_list"),
     path("clients/create/", ClientCreateView.as_view(), name="clients_create"),
-    path("clients/<int:pk>/", views.ClientDetailView.as_view(), name="clients_detail"),
+    path("clients/<int:pk>/",
+         views.ClientDetailView.as_view(), name="clients_detail"),
     path(
         "clients/<int:pk>/update/",
         views.ClientUpdateView.as_view(),
@@ -26,9 +27,11 @@ urlpatterns = [
     ),
     # Сообщения
     path("messages/", views.MessageListView.as_view(), name="messages_list"),
-    path("messages/create/", views.MessageCreateView.as_view(), name="messages_create"),
+    path("messages/create/",
+         views.MessageCreateView.as_view(), name="messages_create"),
     path(
-        "messages/<int:pk>/", views.MessageDetailView.as_view(), name="messages_detail"
+        "messages/<int:pk>/",
+        views.MessageDetailView.as_view(), name="messages_detail"
     ),
     path(
         "messages/<int:pk>/update/",
@@ -42,9 +45,11 @@ urlpatterns = [
     ),
     # Рассылки
     path("mailings/", views.MailingListView.as_view(), name="mailings_list"),
-    path("mailings/create/", MailingCreateView.as_view(), name="mailings_create"),
+    path("mailings/create/",
+         MailingCreateView.as_view(), name="mailings_create"),
     path(
-        "mailings/<int:pk>/", views.MailingDetailView.as_view(), name="mailings_detail"
+        "mailings/<int:pk>/",
+        views.MailingDetailView.as_view(), name="mailings_detail"
     ),
     path(
         "mailings/<int:pk>/update/",
@@ -70,7 +75,8 @@ urlpatterns = [
         name="deactivate_mailing",
     ),
     path(
-        "mailings/<int:pk>/activate/", views.activate_mailing, name="activate_mailing"
+        "mailings/<int:pk>/activate/",
+        views.activate_mailing, name="activate_mailing"
     ),
     # Пользователи (только для модератора/админа)
     path("users/", UserListView.as_view(), name="user_list"),
@@ -79,5 +85,6 @@ urlpatterns = [
         users.views.deactivate_user,
         name="deactivate_user",
     ),
-    path("users/<int:pk>/activate/", users.views.activate_user, name="activate_user"),
+    path("users/<int:pk>/activate/",
+         users.views.activate_user, name="activate_user"),
 ]
