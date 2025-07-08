@@ -1,129 +1,643 @@
+ProgrammingError at /mailings/
+relation "mailings_mailing" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "mailings_mailing"
+                                          ^
+Request Method:	GET
+Request URL:	https://mailsender-dtfo.onrender.com/mailings/
+Django Version:	5.2.2
+Exception Type:	ProgrammingError
+Exception Value:	
+relation "mailings_mailing" does not exist
+LINE 1: SELECT COUNT(*) AS "__count" FROM "mailings_mailing"
+                                          ^
+Exception Location:	/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py, line 105, in _execute
+Raised during:	mailings.views.index
+Python Executable:	/usr/local/bin/python3.11
+Python Version:	3.11.13
+Python Path:	
+['/app',
+ '/app',
+ '/usr/local/bin',
+ '/usr/local/lib/python311.zip',
+ '/usr/local/lib/python3.11',
+ '/usr/local/lib/python3.11/lib-dynload',
+ '/usr/local/lib/python3.11/site-packages']
+Server time:	Tue, 08 Jul 2025 07:58:04 +0000
+Traceback Switch to copy-and-paste view
 
-name: CI & CD
+/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py, line 105, in _execute
+                return self.cursor.execute(sql, params)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+The above exception (relation "mailings_mailing" does not exist LINE 1: SELECT COUNT(*) AS "__count" FROM "mailings_mailing" ^ ) was the direct cause of the following exception:
+/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py, line 55, in inner
+                response = get_response(request)
+                               ^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py, line 197, in _get_response
+                response = wrapped_callback(request, *callback_args, **callback_kwargs)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/app/mailings/views.py, line 27, in index
+    mailing_count = Mailing.objects.count()
+                        ^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/usr/local/lib/python3.11/site-packages/django/db/models/manager.py, line 87, in manager_method
+                return getattr(self.get_queryset(), name)(*args, **kwargs)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/usr/local/lib/python3.11/site-packages/django/db/models/query.py, line 604, in count
+        return self.query.get_count(using=self.db)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/usr/local/lib/python3.11/site-packages/django/db/models/sql/query.py, line 644, in get_count
+        return obj.get_aggregation(using, {"__count": Count("*")})["__count"]
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/usr/local/lib/python3.11/site-packages/django/db/models/sql/query.py, line 626, in get_aggregation
+        result = compiler.execute_sql(SINGLE)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/usr/local/lib/python3.11/site-packages/django/db/models/sql/compiler.py, line 1623, in execute_sql
+            cursor.execute(sql, params)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py, line 122, in execute
+            return super().execute(sql, params)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py, line 79, in execute
+        return self._execute_with_wrappers(
+                    …
+Local vars
+/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py, line 92, in _execute_with_wrappers
+        return executor(sql, params, many, context)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py, line 100, in _execute
+        with self.db.wrap_database_errors:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/usr/local/lib/python3.11/site-packages/django/db/utils.py, line 91, in __exit__
+                raise dj_exc_value.with_traceback(traceback) from exc_value
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+/usr/local/lib/python3.11/site-packages/django/db/backends/utils.py, line 105, in _execute
+                return self.cursor.execute(sql, params)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ …
+Local vars
+Request information
 
-on:
-  push:
-    branches: [develop, main]
+USER
+AnonymousUser
+GET
+No GET data
+POST
+No POST data
+FILES
+No FILES data
+COOKIES
+No cookie data
+META
+Variable	Value
+HTTP_ACCEPT	
+'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+HTTP_ACCEPT_ENCODING	
+'gzip, br'
+HTTP_ACCEPT_LANGUAGE	
+'ru'
+HTTP_CDN_LOOP	
+'cloudflare; loops=1'
+HTTP_CF_CONNECTING_IP	
+'92.62.150.186'
+HTTP_CF_IPCOUNTRY	
+'RU'
+HTTP_CF_RAY	
+'95be08ce7f2ef115-SEA'
+HTTP_CF_VISITOR	
+'{"scheme":"https"}'
+HTTP_HOST	
+'mailsender-dtfo.onrender.com'
+HTTP_PRIORITY	
+'u=0, i'
+HTTP_RENDER_PROXY_TTL	
+'4'
+HTTP_RNDR_ID	
+'80583f59-fb55-4fa5'
+HTTP_SEC_FETCH_DEST	
+'document'
+HTTP_SEC_FETCH_MODE	
+'navigate'
+HTTP_SEC_FETCH_SITE	
+'none'
+HTTP_TRUE_CLIENT_IP	
+'92.62.150.186'
+HTTP_USER_AGENT	
+('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, '
+ 'like Gecko) Version/18.5 Safari/605.1.15')
+HTTP_X_FORWARDED_FOR	
+'92.62.150.186, 172.71.150.59, 10.220.48.22'
+HTTP_X_FORWARDED_PROTO	
+'https'
+HTTP_X_REQUEST_START	
+'1751961484688532'
+PATH_INFO	
+'/mailings/'
+QUERY_STRING	
+''
+RAW_URI	
+'/mailings/'
+REMOTE_ADDR	
+'127.0.0.1'
+REMOTE_PORT	
+'51372'
+REQUEST_METHOD	
+'GET'
+SCRIPT_NAME	
+''
+SERVER_NAME	
+'0.0.0.0'
+SERVER_PORT	
+'8000'
+SERVER_PROTOCOL	
+'HTTP/1.1'
+SERVER_SOFTWARE	
+'gunicorn/23.0.0'
+gunicorn.socket	
+<socket.socket fd=9, family=2, type=1, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 51372)>
+wsgi.errors	
+<gunicorn.http.wsgi.WSGIErrorsWrapper object at 0x77be2475c6a0>
+wsgi.file_wrapper	
+<class 'gunicorn.http.wsgi.FileWrapper'>
+wsgi.input	
+<gunicorn.http.body.Body object at 0x77be2473a990>
+wsgi.input_terminated	
+True
+wsgi.multiprocess	
+False
+wsgi.multithread	
+False
+wsgi.run_once	
+False
+wsgi.url_scheme	
+'https'
+wsgi.version	
+(1, 0)
+Settings
+Using settings module mailsender.settings
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: testuser
-          POSTGRES_PASSWORD: testpass
-          POSTGRES_DB: testdb
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-      redis:
-        image: redis:7-alpine
-        ports:
-          - 6379:6379
-        options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install flake8
-
-      - name: Lint code
-        run: flake8 .
-
-      - name: Wait for PostgreSQL to be ready
-        run: |
-          for i in {1..30}; do
-            nc -z localhost 5432 && echo Success && exit 0
-            echo -n .
-            sleep 1
-          done
-          echo "Postgres failed to start"; exit 1
-
-      - name: Run tests
-        env:
-          SECRET_KEY: testsecret
-          DEBUG: "True"
-          ALLOWED_HOSTS: 127.0.0.1,localhost
-          POSTGRES_DB: testdb
-          POSTGRES_USER: testuser
-          POSTGRES_PASSWORD: testpass
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
-          REDIS_URL: redis://localhost:6379/0
-        run: python manage.py test
-
-  docker-build:
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Docker Compose .env
-        run: |
-          echo "POSTGRES_DB=mailsender" > .env
-          echo "POSTGRES_USER=adminuser" >> .env
-          echo "POSTGRES_PASSWORD=1234" >> .env
-          echo "POSTGRES_HOST=db" >> .env
-          echo "POSTGRES_PORT=5432" >> .env
-          echo "SECRET_KEY='django-insecure-\$bw=7gen2)905)psvun\$4wh1em0fx(xbcx6pvi6j^a9_74o+cc'" >> .env
-          echo "DEBUG=True" >> .env
-          echo "ALLOWED_HOSTS=localhost,127.0.0.1" >> .env
-          echo "REDIS_URL=redis://redis:6379/0" >> .env
-
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
-
-      - name: Build Docker images
-        run: docker-compose build
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: docker-build
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Prepare .env for production
-        run: |
-          echo "${{ secrets.ENV_PROD_FILE }}" > .env
-
-      - name: Copy project files to server
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          source: "."
-          target: "/home/${{ secrets.USERNAME }}/mailsender/"
-
-      - name: Deploy on server via SSH
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            cd /home/${{ secrets.USERNAME }}/mailsender/
-            docker-compose down
-            docker-compose pull
-            docker-compose up -d --build
+Setting	Value
+ABSOLUTE_URL_OVERRIDES	
+{}
+ADMINS	
+[]
+ALLOWED_HOSTS	
+['.onrender.com', 'localhost', '127.0.0.1']
+APPEND_SLASH	
+True
+AUTHENTICATION_BACKENDS	
+'********************'
+AUTH_PASSWORD_VALIDATORS	
+'********************'
+AUTH_USER_MODEL	
+'********************'
+BASE_DIR	
+PosixPath('/app')
+CACHES	
+{'default': {'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'}}
+CACHE_MIDDLEWARE_ALIAS	
+'default'
+CACHE_MIDDLEWARE_KEY_PREFIX	
+'********************'
+CACHE_MIDDLEWARE_SECONDS	
+600
+CSRF_COOKIE_AGE	
+31449600
+CSRF_COOKIE_DOMAIN	
+None
+CSRF_COOKIE_HTTPONLY	
+False
+CSRF_COOKIE_NAME	
+'csrftoken'
+CSRF_COOKIE_PATH	
+'/'
+CSRF_COOKIE_SAMESITE	
+'Lax'
+CSRF_COOKIE_SECURE	
+False
+CSRF_FAILURE_VIEW	
+'django.views.csrf.csrf_failure'
+CSRF_HEADER_NAME	
+'HTTP_X_CSRFTOKEN'
+CSRF_TRUSTED_ORIGINS	
+[]
+CSRF_USE_SESSIONS	
+False
+DATABASES	
+{'default': {'ATOMIC_REQUESTS': False,
+             'AUTOCOMMIT': True,
+             'CONN_HEALTH_CHECKS': False,
+             'CONN_MAX_AGE': 0,
+             'ENGINE': 'django.db.backends.postgresql',
+             'HOST': 'dpg-d18fbp2dbo4c739k1ckg-a',
+             'NAME': 'mailsender_shgg',
+             'OPTIONS': {},
+             'PASSWORD': '********************',
+             'PORT': '5432',
+             'TEST': {'CHARSET': None,
+                      'COLLATION': None,
+                      'MIGRATE': True,
+                      'MIRROR': None,
+                      'NAME': None},
+             'TIME_ZONE': None,
+             'USER': 'adminuser'}}
+DATABASE_ROUTERS	
+[]
+DATA_UPLOAD_MAX_MEMORY_SIZE	
+2621440
+DATA_UPLOAD_MAX_NUMBER_FIELDS	
+1000
+DATA_UPLOAD_MAX_NUMBER_FILES	
+100
+DATETIME_FORMAT	
+'N j, Y, P'
+DATETIME_INPUT_FORMATS	
+['%Y-%m-%d %H:%M:%S',
+ '%Y-%m-%d %H:%M:%S.%f',
+ '%Y-%m-%d %H:%M',
+ '%m/%d/%Y %H:%M:%S',
+ '%m/%d/%Y %H:%M:%S.%f',
+ '%m/%d/%Y %H:%M',
+ '%m/%d/%y %H:%M:%S',
+ '%m/%d/%y %H:%M:%S.%f',
+ '%m/%d/%y %H:%M']
+DATE_FORMAT	
+'N j, Y'
+DATE_INPUT_FORMATS	
+['%Y-%m-%d',
+ '%m/%d/%Y',
+ '%m/%d/%y',
+ '%b %d %Y',
+ '%b %d, %Y',
+ '%d %b %Y',
+ '%d %b, %Y',
+ '%B %d %Y',
+ '%B %d, %Y',
+ '%d %B %Y',
+ '%d %B, %Y']
+DEBUG	
+True
+DEBUG_PROPAGATE_EXCEPTIONS	
+False
+DECIMAL_SEPARATOR	
+'.'
+DEFAULT_AUTO_FIELD	
+'django.db.models.AutoField'
+DEFAULT_CHARSET	
+'utf-8'
+DEFAULT_EXCEPTION_REPORTER	
+'django.views.debug.ExceptionReporter'
+DEFAULT_EXCEPTION_REPORTER_FILTER	
+'django.views.debug.SafeExceptionReporterFilter'
+DEFAULT_FROM_EMAIL	
+'webmaster@localhost'
+DEFAULT_INDEX_TABLESPACE	
+''
+DEFAULT_TABLESPACE	
+''
+DISALLOWED_USER_AGENTS	
+[]
+EMAIL_BACKEND	
+'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST	
+'localhost'
+EMAIL_HOST_PASSWORD	
+'********************'
+EMAIL_HOST_USER	
+''
+EMAIL_PORT	
+25
+EMAIL_SSL_CERTFILE	
+None
+EMAIL_SSL_KEYFILE	
+'********************'
+EMAIL_SUBJECT_PREFIX	
+'[Django] '
+EMAIL_TIMEOUT	
+None
+EMAIL_USE_LOCALTIME	
+False
+EMAIL_USE_SSL	
+False
+EMAIL_USE_TLS	
+False
+FILE_UPLOAD_DIRECTORY_PERMISSIONS	
+None
+FILE_UPLOAD_HANDLERS	
+['django.core.files.uploadhandler.MemoryFileUploadHandler',
+ 'django.core.files.uploadhandler.TemporaryFileUploadHandler']
+FILE_UPLOAD_MAX_MEMORY_SIZE	
+2621440
+FILE_UPLOAD_PERMISSIONS	
+420
+FILE_UPLOAD_TEMP_DIR	
+None
+FIRST_DAY_OF_WEEK	
+0
+FIXTURE_DIRS	
+[]
+FORCE_SCRIPT_NAME	
+None
+FORMAT_MODULE_PATH	
+None
+FORMS_URLFIELD_ASSUME_HTTPS	
+False
+FORM_RENDERER	
+'django.forms.renderers.DjangoTemplates'
+IGNORABLE_404_URLS	
+[]
+INSTALLED_APPS	
+['django.contrib.admin',
+ 'users',
+ 'mailings',
+ 'mailsender',
+ 'widget_tweaks',
+ 'django.contrib.auth',
+ 'django.contrib.contenttypes',
+ 'django.contrib.sessions',
+ 'django.contrib.messages',
+ 'django.contrib.staticfiles']
+INTERNAL_IPS	
+[]
+LANGUAGES	
+[('af', 'Afrikaans'),
+ ('ar', 'Arabic'),
+ ('ar-dz', 'Algerian Arabic'),
+ ('ast', 'Asturian'),
+ ('az', 'Azerbaijani'),
+ ('bg', 'Bulgarian'),
+ ('be', 'Belarusian'),
+ ('bn', 'Bengali'),
+ ('br', 'Breton'),
+ ('bs', 'Bosnian'),
+ ('ca', 'Catalan'),
+ ('ckb', 'Central Kurdish (Sorani)'),
+ ('cs', 'Czech'),
+ ('cy', 'Welsh'),
+ ('da', 'Danish'),
+ ('de', 'German'),
+ ('dsb', 'Lower Sorbian'),
+ ('el', 'Greek'),
+ ('en', 'English'),
+ ('en-au', 'Australian English'),
+ ('en-gb', 'British English'),
+ ('eo', 'Esperanto'),
+ ('es', 'Spanish'),
+ ('es-ar', 'Argentinian Spanish'),
+ ('es-co', 'Colombian Spanish'),
+ ('es-mx', 'Mexican Spanish'),
+ ('es-ni', 'Nicaraguan Spanish'),
+ ('es-ve', 'Venezuelan Spanish'),
+ ('et', 'Estonian'),
+ ('eu', 'Basque'),
+ ('fa', 'Persian'),
+ ('fi', 'Finnish'),
+ ('fr', 'French'),
+ ('fy', 'Frisian'),
+ ('ga', 'Irish'),
+ ('gd', 'Scottish Gaelic'),
+ ('gl', 'Galician'),
+ ('he', 'Hebrew'),
+ ('hi', 'Hindi'),
+ ('hr', 'Croatian'),
+ ('hsb', 'Upper Sorbian'),
+ ('hu', 'Hungarian'),
+ ('hy', 'Armenian'),
+ ('ia', 'Interlingua'),
+ ('id', 'Indonesian'),
+ ('ig', 'Igbo'),
+ ('io', 'Ido'),
+ ('is', 'Icelandic'),
+ ('it', 'Italian'),
+ ('ja', 'Japanese'),
+ ('ka', 'Georgian'),
+ ('kab', 'Kabyle'),
+ ('kk', 'Kazakh'),
+ ('km', 'Khmer'),
+ ('kn', 'Kannada'),
+ ('ko', 'Korean'),
+ ('ky', 'Kyrgyz'),
+ ('lb', 'Luxembourgish'),
+ ('lt', 'Lithuanian'),
+ ('lv', 'Latvian'),
+ ('mk', 'Macedonian'),
+ ('ml', 'Malayalam'),
+ ('mn', 'Mongolian'),
+ ('mr', 'Marathi'),
+ ('ms', 'Malay'),
+ ('my', 'Burmese'),
+ ('nb', 'Norwegian Bokmål'),
+ ('ne', 'Nepali'),
+ ('nl', 'Dutch'),
+ ('nn', 'Norwegian Nynorsk'),
+ ('os', 'Ossetic'),
+ ('pa', 'Punjabi'),
+ ('pl', 'Polish'),
+ ('pt', 'Portuguese'),
+ ('pt-br', 'Brazilian Portuguese'),
+ ('ro', 'Romanian'),
+ ('ru', 'Russian'),
+ ('sk', 'Slovak'),
+ ('sl', 'Slovenian'),
+ ('sq', 'Albanian'),
+ ('sr', 'Serbian'),
+ ('sr-latn', 'Serbian Latin'),
+ ('sv', 'Swedish'),
+ ('sw', 'Swahili'),
+ ('ta', 'Tamil'),
+ ('te', 'Telugu'),
+ ('tg', 'Tajik'),
+ ('th', 'Thai'),
+ ('tk', 'Turkmen'),
+ ('tr', 'Turkish'),
+ ('tt', 'Tatar'),
+ ('udm', 'Udmurt'),
+ ('ug', 'Uyghur'),
+ ('uk', 'Ukrainian'),
+ ('ur', 'Urdu'),
+ ('uz', 'Uzbek'),
+ ('vi', 'Vietnamese'),
+ ('zh-hans', 'Simplified Chinese'),
+ ('zh-hant', 'Traditional Chinese')]
+LANGUAGES_BIDI	
+['he', 'ar', 'ar-dz', 'ckb', 'fa', 'ug', 'ur']
+LANGUAGE_CODE	
+'en-us'
+LANGUAGE_COOKIE_AGE	
+None
+LANGUAGE_COOKIE_DOMAIN	
+None
+LANGUAGE_COOKIE_HTTPONLY	
+False
+LANGUAGE_COOKIE_NAME	
+'django_language'
+LANGUAGE_COOKIE_PATH	
+'/'
+LANGUAGE_COOKIE_SAMESITE	
+None
+LANGUAGE_COOKIE_SECURE	
+False
+LOCALE_PATHS	
+[]
+LOGGING	
+{}
+LOGGING_CONFIG	
+'logging.config.dictConfig'
+LOGIN_REDIRECT_URL	
+'users:profile'
+LOGIN_URL	
+'users:login'
+LOGOUT_REDIRECT_URL	
+'users:login'
+MANAGERS	
+[]
+MEDIA_ROOT	
+''
+MEDIA_URL	
+'/'
+MESSAGE_STORAGE	
+'django.contrib.messages.storage.fallback.FallbackStorage'
+MIDDLEWARE	
+['django.middleware.security.SecurityMiddleware',
+ 'django.contrib.sessions.middleware.SessionMiddleware',
+ 'django.middleware.common.CommonMiddleware',
+ 'django.middleware.csrf.CsrfViewMiddleware',
+ 'django.contrib.auth.middleware.AuthenticationMiddleware',
+ 'django.contrib.messages.middleware.MessageMiddleware',
+ 'django.middleware.clickjacking.XFrameOptionsMiddleware']
+MIGRATION_MODULES	
+{}
+MONTH_DAY_FORMAT	
+'F j'
+NUMBER_GROUPING	
+0
+PASSWORD_HASHERS	
+'********************'
+PASSWORD_RESET_TIMEOUT	
+'********************'
+PREPEND_WWW	
+False
+ROOT_URLCONF	
+'mailsender.urls'
+SECRET_KEY	
+'********************'
+SECRET_KEY_FALLBACKS	
+'********************'
+SECURE_CONTENT_TYPE_NOSNIFF	
+True
+SECURE_CROSS_ORIGIN_OPENER_POLICY	
+'same-origin'
+SECURE_HSTS_INCLUDE_SUBDOMAINS	
+False
+SECURE_HSTS_PRELOAD	
+False
+SECURE_HSTS_SECONDS	
+0
+SECURE_PROXY_SSL_HEADER	
+None
+SECURE_REDIRECT_EXEMPT	
+[]
+SECURE_REFERRER_POLICY	
+'same-origin'
+SECURE_SSL_HOST	
+None
+SECURE_SSL_REDIRECT	
+False
+SERVER_EMAIL	
+'root@localhost'
+SESSION_CACHE_ALIAS	
+'default'
+SESSION_COOKIE_AGE	
+1209600
+SESSION_COOKIE_DOMAIN	
+None
+SESSION_COOKIE_HTTPONLY	
+True
+SESSION_COOKIE_NAME	
+'sessionid'
+SESSION_COOKIE_PATH	
+'/'
+SESSION_COOKIE_SAMESITE	
+'Lax'
+SESSION_COOKIE_SECURE	
+False
+SESSION_ENGINE	
+'django.contrib.sessions.backends.db'
+SESSION_EXPIRE_AT_BROWSER_CLOSE	
+False
+SESSION_FILE_PATH	
+None
+SESSION_SAVE_EVERY_REQUEST	
+False
+SESSION_SERIALIZER	
+'django.contrib.sessions.serializers.JSONSerializer'
+SETTINGS_MODULE	
+'mailsender.settings'
+SHORT_DATETIME_FORMAT	
+'m/d/Y P'
+SHORT_DATE_FORMAT	
+'m/d/Y'
+SIGNING_BACKEND	
+'django.core.signing.TimestampSigner'
+SILENCED_SYSTEM_CHECKS	
+[]
+STATICFILES_DIRS	
+[PosixPath('/app/static')]
+STATICFILES_FINDERS	
+['django.contrib.staticfiles.finders.FileSystemFinder',
+ 'django.contrib.staticfiles.finders.AppDirectoriesFinder']
+STATIC_ROOT	
+None
+STATIC_URL	
+'/static/'
+STORAGES	
+{'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
+ 'staticfiles': {'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage'}}
+TEMPLATES	
+[{'APP_DIRS': True,
+  'BACKEND': 'django.template.backends.django.DjangoTemplates',
+  'DIRS': [],
+  'OPTIONS': {'context_processors': ['django.template.context_processors.request',
+                                     'django.contrib.auth.context_processors.auth',
+                                     'django.contrib.messages.context_processors.messages']}}]
+TEST_NON_SERIALIZED_APPS	
+[]
+TEST_RUNNER	
+'django.test.runner.DiscoverRunner'
+THOUSAND_SEPARATOR	
+','
+TIME_FORMAT	
+'P'
+TIME_INPUT_FORMATS	
+['%H:%M:%S', '%H:%M:%S.%f', '%H:%M']
+TIME_ZONE	
+'UTC'
+USE_I18N	
+True
+USE_SQLITE	
+False
+USE_THOUSAND_SEPARATOR	
+False
+USE_TZ	
+True
+USE_X_FORWARDED_HOST	
+False
+USE_X_FORWARDED_PORT	
+False
+WSGI_APPLICATION	
+'mailsender.wsgi.application'
+X_FRAME_OPTIONS	
+'DENY'
+YEAR_MONTH_FORMAT	
+'F Y'
+You’re seeing this error because you have DEBUG = True in your Django settings file. Change that to False, and Django will display a standard page generated by the handler for this status code.
