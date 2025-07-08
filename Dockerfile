@@ -28,4 +28,4 @@ COPY . .
 EXPOSE 8000
 
 # Значение по умолчанию (можно переопределить командой в docker-compose.yaml)
-CMD ["gunicorn", "mailsender.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["/bin/sh", "-c", "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn mailsender.wsgi:application --bind 0.0.0.0:8000"]
