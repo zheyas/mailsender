@@ -9,6 +9,7 @@ click-didyoumean==0.3.1
 click-plugins==1.1.1
 click-repl==0.3.0
 cron-descriptor==1.4.5
+dj-database-url==3.0.1
 Django==5.2.2
 django-celery-beat==2.8.1
 django-environ==0.12.0
@@ -16,6 +17,7 @@ django-timezone-field==7.1
 django-widget-tweaks==1.5.0
 flake8==7.2.0
 gunicorn==23.0.0
+isort==6.0.1
 kombu==5.5.4
 mccabe==0.7.0
 mypy_extensions==1.1.0
@@ -35,3 +37,4 @@ typing_extensions==4.14.0
 tzdata==2025.2
 vine==5.1.0
 wcwidth==0.2.13
+whitenoise==6.9.0

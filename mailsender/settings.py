@@ -1,7 +1,5 @@
-
 import os
 from pathlib import Path
-
 import environ
 
 # Настройка путей
@@ -39,6 +37,7 @@ LOGOUT_REDIRECT_URL = "users:login"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",  # <--- ОБЯЗАТЕЛЬНО!
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -67,7 +66,6 @@ TEMPLATES = [
 WSGI_APPLICATION = "mailsender.wsgi.application"
 
 # --- БЛОК ДЛЯ ПОДДЕРЖКИ SQLITE И POSTGRES ---
-# Определяем, хотим ли SQLite (обычно для тестов и CI)
 USE_SQLITE = (env.bool("USE_SQLITE", default=False)
               or env("DB_NAME", default="") == "db.sqlite3")
 
@@ -90,14 +88,12 @@ else:
         }
     }
 
-# --- конец блока ---
-
 # Валидация паролей
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME":
-            "django.contrib.auth.password_validation."
-            "UserAttributeSimilarityValidator",
+            "django.contrib.auth."
+            "password_validation.UserAttributeSimilarityValidator",
     },
     {
         "NAME":
@@ -119,7 +115,15 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-# Статические файлы
+# --- СТАТИКА ---
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# WhiteNoise Storage (для правильной работы на проде)
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# ----------------------------------------------
+
+# Если используешь медиа:
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
